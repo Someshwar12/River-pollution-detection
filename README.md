@@ -2,7 +2,7 @@
 
 # River Pollution Detection & Monitoring System
 
-### *AI-assisted river pollution analysis using image segmentation, water-quality data, and temporal modeling*
+*AI-assisted river pollution analysis using image segmentation, water-quality data, and temporal modeling*
 
 <p>
   <img src="https://img.shields.io/badge/Status-Academic%20Prototype-1f883d?style=for-the-badge" alt="Status">

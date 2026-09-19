@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River Pollution Detection &amp; Monitoring System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-water"></i>
+                <span>RiverWatch AI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link" data-page="home">Home</a>
+                <a href="#" class="nav-link" data-page="upload">Upload</a>
+                <a href="#" class="nav-link" data-page="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-page="admin">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Page: Home -->
+    <div id="home-page" class="page active">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">AI-Powered River Pollution Detection</h1>
+                <p class="hero-subtitle">Advanced machine learning models for real-time water quality analysis and environmental monitoring</p>
+                <div class="hero-buttons">
+                    <button class="btn btn--primary" data-page="upload">Start Analysis</button>
+                    <button class="btn btn--outline" data-page="dashboard">View Dashboard</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="river-illustration">
+                    <i class="fas fa-water fa-4x"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">1,247</div>
+                            <div class="stat-label">Samples Analyzed</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">94.7%</div>
+                            <div class="stat-label">Model Accuracy</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">23</div>
+                            <div class="stat-label">Active Alerts</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">3.2s</div>
+                            <div class="stat-label">Avg Processing</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <div class="container">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Image Analysis</h3>
+                        <p>Upload river images for AI-powered pollution detection using advanced U-Net segmentation models.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-area"></i>
+                        </div>
+                        <h3>Sensor Data</h3>
+                        <p>Analyze CSV sensor data with LSTM models for time-series pollution trend predictions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3>Geographic Mapping</h3>
+                        <p>Visualize pollution hotspots and trends across different river locations and regions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>AI Insights</h3>
+                        <p>Get detailed pollution classification with confidence scores and actionable recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Upload -->
+    <div id="upload-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1>Upload &amp; Analyze</h1>
+                <p>Upload river images or sensor data for AI-powered pollution analysis</p>
+            </div>
+
+            <div class="upload-section">
+                <div class="upload-tabs">
+                    <button class="tab-button active" data-tab="image">Image Upload</button>
+                    <button class="tab-button" data-tab="data">Sensor Data</button>
+                </div>
+
+                <!-- Image Upload Tab -->
+                <div id="image-tab" class="tab-content active">
+                    <div class="upload-card">
+                        <div class="upload-area" id="image-upload">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                                <h3>Drop river images here</h3>
+                                <p>Supported formats: JPG, PNG, WebP (Max 10MB)</p>
+                                <button class="btn btn--secondary">Browse Files</button>
+                                <input type="file" id="image-input" accept="image/*" hidden>
+                            </div>
+                        </div>
+                        <div id="image-preview" class="preview-section hidden">
+                            <img id="preview-img" alt="Preview">
+                            <div class="preview-info">
+                                <h4 id="file-name">Image.jpg</h4>
+                                <p id="file-size">2.5 MB</p>
+                            </div>
+                        </div>
+                        <button id="analyze-image" class="btn btn--primary btn--full-width" disabled>
+                            <i class="fas fa-microscope"></i> Analyze Image
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Data Upload Tab -->
+                <div id="data-tab" class="tab-content">
+                    <div class="upload-card">
+                        <div class="upload-area" id="data-upload">
+                            <div class="upload-content">
+                                <i class="fas fa-file-csv fa-3x"></i>
+                                <h3>Drop CSV files here</h3>
+                                <p>Sensor data with pH, temperature, turbidity, etc.</p>
+                                <button class="btn btn--secondary">Browse Files</button>
+                                <input type="file" id="data-input" accept=".csv" hidden>
+                            </div>
+                        </div>
+                        <div id="data-preview" class="preview-section hidden">
+                            <div class="data-table-container">
+                                <table id="data-table" class="data-table">
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <button id="analyze-data" class="btn btn--primary btn--full-width" disabled>
+                            <i class="fas fa-chart-line"></i> Analyze Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processing Modal -->
+            <div id="processing-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="processing-animation">
+                        <div class="spinner"></div>
+                        <h3>Analyzing Sample...</h3>
+                        <p>AI models are processing your data</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="processing-steps">
+                            <div class="step completed">
+                                <i class="fas fa-check"></i> Data validated
+                            </div>
+                            <div class="step active">
+                                <i class="fas fa-cog fa-spin"></i> AI analysis in progress
+                            </div>
+                            <div class="step">
+                                <i class="fas fa-chart-bar"></i> Generating results
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Dashboard -->
+    <div id="dashboard-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1>Analytics Dashboard</h1>
+                <p>Comprehensive water quality monitoring and pollution trends</p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stats-grid">
+                    <div class="stat-card clean">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">687</div>
+                            <div class="stat-label">Clean Samples</div>
+                            <div class="stat-trend">+12% this month</div>
+                        </div>
+                    </div>
+                    <div class="stat-card moderate">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">412</div>
+                            <div class="stat-label">Moderate Pollution</div>
+                            <div class="stat-trend">-3% this month</div>
+                        </div>
+                    </div>
+                    <div class="stat-card high">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">148</div>
+                            <div class="stat-label">High Pollution</div>
+                            <div class="stat-trend">+8% this month</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">This Month</div>
+                            <div class="stat-trend">New samples</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Pollution Trends</h3>
+                        <div class="chart-controls">
+                            <select id="trend-period">
+                                <option value="6m">Last 6 months</option>
+                                <option value="1y">Last year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trend-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Water Quality Parameters</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="parameters-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card full-width">
+                    <div class="card-header">
+                        <h3>Recent Samples</h3>
+                        <div class="table-controls">
+                            <input type="search" placeholder="Search samples..." id="samples-search">
+                            <select id="pollution-filter">
+                                <option value="all">All Levels</option>
+                                <option value="Clean">Clean</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="samples-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Sample ID</th>
+                                    <th>Location</th>
+                                    <th>Date</th>
+                                    <th>Pollution Level</th>
+                                    <th>Confidence</th>
+                                    <th>pH</th>
+                                    <th>Temperature</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Admin -->
+    <div id="admin-page" class="page">
+        <div class="container">
+            <div class="page-header">
+                <h1>Admin Panel</h1>
+                <p>System management and data export tools</p>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3>Recent Activities</h3>
+                    </div>
+                    <div class="activities-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Dr. Priya Sharma uploaded water sample</div>
+                                <div class="activity-meta">Ganges River • 2024-10-13 14:30</div>
+                            </div>
+                            <div class="activity-status completed">Analyzed</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Prof. Rajesh Kumar generated report</div>
+                                <div class="activity-meta">Yamuna River • 2024-10-13 13:15</div>
+                            </div>
+                            <div class="activity-status completed">Completed</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Environmental Officer uploaded sensor data</div>
+                                <div class="activity-meta">Krishna River • 2024-10-13 12:00</div>
+                            </div>
+                            <div class="activity-status processing">Processing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3>Data Export</h3>
+                    </div>
+                    <div class="export-options">
+                        <div class="export-option">
+                            <h4>Sample Data Export</h4>
+                            <p>Export all water quality samples and analysis results</p>
+                            <button class="btn btn--outline">
+                                <i class="fas fa-download"></i> Export CSV
+                            </button>
+                        </div>
+                        <div class="export-option">
+                            <h4>Pollution Report</h4>
+                            <p>Generate comprehensive pollution monitoring report</p>
+                            <button class="btn btn--outline">
+                                <i class="fas fa-file-pdf"></i> Generate PDF
+                            </button>
+                        </div>
+                        <div class="export-option">
+                            <h4>Analytics Dashboard</h4>
+                            <p>Export dashboard analytics and trend data</p>
+                            <button class="btn btn--outline">
+                                <i class="fas fa-chart-bar"></i> Export JSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card full-width">
+                    <div class="card-header">
+                        <h3>System Status</h3>
+                    </div>
+                    <div class="system-status">
+                        <div class="status-item">
+                            <div class="status-indicator online"></div>
+                            <div class="status-content">
+                                <div class="status-title">AI Models</div>
+                                <div class="status-description">U-Net and LSTM models running normally</div>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-indicator online"></div>
+                            <div class="status-content">
+                                <div class="status-title">Database</div>
+                                <div class="status-description">MongoDB connection stable</div>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-indicator warning"></div>
+                            <div class="status-content">
+                                <div class="status-title">Storage</div>
+                                <div class="status-description">78% capacity used</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal hidden">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>Analysis Results</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="results-grid">
+                    <div class="result-section">
+                        <h4>Pollution Classification</h4>
+                        <div class="pollution-result">
+                            <div class="pollution-level" id="result-level">Moderate</div>
+                            <div class="confidence-score">
+                                <span>Confidence: </span>
+                                <span id="result-confidence">87%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-section">
+                        <h4>Water Quality Parameters</h4>
+                        <div class="parameters-grid" id="result-parameters">
+                            <!-- Parameters will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="result-section full-width">
+                        <h4>AI Segmentation Analysis</h4>
+                        <div class="image-comparison">
+                            <div class="image-container">
+                                <img id="original-image" alt="Original">
+                                <span class="image-label">Original Image</span>
+                            </div>
+                            <div class="image-container">
+                                <canvas id="segmented-canvas" width="400" height="200"></canvas>
+                                <span class="image-label">AI Segmentation Overlay</span>
+                            </div>
+                        </div>
+                        <div class="segmentation-legend">
+                            <h5>Pollution Level Legend</h5>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <div class="legend-color high"></div>
+                                    <span>High Pollution</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color moderate"></div>
+                                    <span>Moderate Pollution</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color clean"></div>
+                                    <span>Clean Water</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- NEW: Pollution Insights Section -->
+                    <div class="result-section full-width insights-section">
+                        <h4>Pollution Insights &amp; Environmental Impact</h4>
+                        
+                        <!-- Statistics Panel -->
+                        <div class="insights-grid">
+                            <div class="stats-panel">
+                                <h5>Pollution Statistics</h5>
+                                <div class="stats-metrics">
+                                    <div class="metric-item high-pollution">
+                                        <span class="metric-value" id="high-pollution-percent">0%</span>
+                                        <span class="metric-label">High Pollution Area</span>
+                                    </div>
+                                    <div class="metric-item moderate-pollution">
+                                        <span class="metric-value" id="moderate-pollution-percent">0%</span>
+                                        <span class="metric-label">Moderate Pollution Area</span>
+                                    </div>
+                                    <div class="metric-item clean-water">
+                                        <span class="metric-value" id="clean-water-percent">0%</span>
+                                        <span class="metric-label">Clean Water Area</span>
+                                    </div>
+                                    <div class="metric-item severity-score">
+                                        <span class="metric-value" id="severity-score">0.0</span>
+                                        <span class="metric-label">Overall Severity Score</span>
+                                    </div>
+                                    <div class="metric-item pollution-category">
+                                        <span class="metric-value" id="pollution-category">Clean</span>
+                                        <span class="metric-label">Predicted Category</span>
+                                    </div>
+                                    <div class="metric-item affected-area">
+                                        <span class="metric-value" id="affected-area">0</span>
+                                        <span class="metric-label">Affected Area (m²)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Charts Panel -->
+                            <div class="charts-panel">
+                                <div class="chart-row">
+                                    <div class="donut-chart-container">
+                                        <h5>Pollution Distribution</h5>
+                                        <canvas id="pollution-donut-chart"></canvas>
+                                    </div>
+                                    <div class="gauge-chart-container">
+                                        <h5>Severity Gauge</h5>
+                                        <canvas id="severity-gauge-chart"></canvas>
+                                        <div class="gauge-indicator">
+                                            <span id="gauge-percentage">0</span>%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Environmental Impact Assessment -->
+                        <div class="impact-assessment">
+                            <h5>Environmental Impact Assessment</h5>
+                            <div class="assessment-grid">
+                                <div class="assessment-item">
+                                    <div class="assessment-icon water-quality">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <div class="assessment-title">Water Quality Status</div>
+                                        <div class="assessment-value" id="water-quality-status">Safe</div>
+                                        <div class="assessment-desc" id="water-quality-desc">Suitable for consumption with standard treatment</div>
+                                    </div>
+                                </div>
+                                <div class="assessment-item">
+                                    <div class="assessment-icon ecosystem">
+                                        <i class="fas fa-fish"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <div class="assessment-title">Ecosystem Impact</div>
+                                        <div class="assessment-value" id="ecosystem-impact">Low</div>
+                                        <div class="assessment-desc" id="ecosystem-desc">Minimal impact on aquatic life</div>
+                                    </div>
+                                </div>
+                                <div class="assessment-item">
+                                    <div class="assessment-icon compliance">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div class="assessment-content">
+                                        <div class="assessment-title">Compliance Status</div>
+                                        <div class="assessment-value" id="compliance-status">Meets Standards</div>
+                                        <div class="assessment-desc">Environmental regulations compliance</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recommendations -->
+                        <div class="recommendations">
+                            <h5>Recommended Actions</h5>
+                            <div class="recommendations-list" id="recommendations-list">
+                                <!-- Recommendations will be populated dynamically -->
+                            </div>
+                        </div>
+                        
+                        <!-- Trend Indicator -->
+                        <div class="trend-indicator">
+                            <div class="trend-item">
+                                <i class="fas fa-arrow-up trend-arrow" id="trend-arrow"></i>
+                                <span class="trend-text" id="trend-text">Above average pollution levels detected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--secondary" id="save-result">Save Result</button>
+                <button class="btn btn--primary" id="export-result">Export Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

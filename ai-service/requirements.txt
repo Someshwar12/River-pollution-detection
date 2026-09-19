@@ -1,0 +1,16 @@
+# ai-service/requirements.txt
+Flask==2.3.3
+Flask-CORS==4.0.0
+tensorflow==2.13.0  
+numpy==1.24.3
+opencv-python==4.8.0.76
+Pillow==10.0.0
+pandas==2.0.3
+scikit-learn==1.3.0
+matplotlib==3.7.2
+python-dotenv==1.0.0
+gunicorn==21.2.0
+
+# --- Added for Geospatial and Data Preprocessing (Phase 2 ML) ---
+sentinelsat
+scikit-image

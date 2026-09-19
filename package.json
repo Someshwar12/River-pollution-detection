@@ -1,0 +1,21 @@
+{
+  "name": "river-pollution-detection-system",
+  "version": "1.0.0",
+  "description": "AI-powered River Pollution Detection and Monitoring System using MERN stack",
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "install-deps": "npm install && cd client && npm install && cd ../server && npm install",
+    "setup": "npm run install-deps"
+  },
+  "keywords": ["river", "pollution", "detection", "AI", "MERN", "U-Net", "LSTM", "environmental"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
